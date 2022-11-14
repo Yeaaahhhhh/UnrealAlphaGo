@@ -1,0 +1,21 @@
+Script started on 2022-09-16 15:25:45-06:00 [TERM="xterm" TTY="/dev/pts/1" COLUMNS="80" LINES="24"]
+zshi6@ug11:~/cmput455/as1>mv assignment1.tgz ~/cmput455
+zshi6@ug11:~/cmput455/as1>cd ..
+zshi6@ug11:~/cmput455>ls[K[Ktar xvfz assignment1.tgz 
+assignment1/
+assignment1/gtp_connection.py
+assignment1/engine.py
+assignment1/presubmission.log
+assignment1/board_util.py
+assignment1/board_base.py
+assignment1/Go0.py
+assignment1/public-tests-nogo.gtp
+assignment1/board.py
+zshi6@ug11:~/cmput455>cd s[Kass[K[K[K[K[K[Kls
+as1  assignment1  assignment1.tgz
+zshi6@ug11:~/cmput455>cd assignment1
+zshi6@ug11:~/cmput455/assignment1>gogui-regress Go0.py public-tests-nogo.gtp 
+zshi6@ug11:~/cmput455/assignment1>exit
+exit
+
+Script done on 2022-09-16 15:27:08-06:00 [COMMAND_EXIT_CODE="0"]
