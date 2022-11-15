@@ -8,7 +8,9 @@ at the University of Edinburgh.
 """
 import traceback
 from sys import stdin, stdout, stderr
+import os, sys
 from board_util import (
+   GO_POINT,
     GoBoardUtil,
     BLACK,
     WHITE,
@@ -20,7 +22,6 @@ from board_util import (
 )
 import numpy as np
 import re
-from pattern_util import PatternUtil
 
 class GtpConnection:
     def __init__(self, go_engine, board, debug_mode=False):
@@ -71,6 +72,8 @@ class GtpConnection:
             "policy": (1, 'Usage: policy POLICYTYPE'),
             "selection": (1, 'Usage: selection SELECTIONTYPE'),       
         }
+
+
 
     def write(self, data):
         stdout.write(data)
@@ -264,8 +267,9 @@ class GtpConnection:
                 self.respond('white')
             else:
                 self.respond('black')
+
     def policy_cmd(self,args):
-        if args [0] == 'random':
+        if args[0] == 'random':
             self.go_engine.random_simulation = True
             self.go_engine.use_pattern = False
         elif args[0] == 'pattern':
@@ -283,43 +287,11 @@ class GtpConnection:
         self.respond()
         
     def policy_moves_cmd(self, args):
-        if self.go_engine.random_simulation == True:  # if random
-            randMoves = []
-            probabilities = []            
-            empties = self.board.get_empty_points()
-            color = self.board.current_player
-            legalMoves = []
-            
-            for move in empties:
-                if self.board.is_legal(move, color):
-                    legalMoves.append(move)
-            
-            for move in legalMoves:
-                coords = point_to_coord(move, self.board.size)
-                randMoves.append(format_point(coords).lower())
-                probabilities.append(str(round(1/len(legalMoves), 3))) #randomize
-            finalMoveList = ' '.join(sorted(randMoves))
-            prob = ' '.join(probabilities)
-            self.respond(finalMoveList + ' ' + prob)
-        else:  # if use pattern
-            DICT = {}
-            probabi = []
-            patteMoves = []            
-            moves, values = PatternUtil.generate_pattern_moves(self.board)
-            patternValue = PatternUtil.generate_move_with_filter(self.board,True)[1]
-            
-            for move in moves:
-                coords = point_to_coord(move, self.board.size)
-                patteMoves.append(format_point(coords).lower())
-            for pMove in range(len(patteMoves)):
-                DICT[patteMoves[pMove]] = patternValue[pMove]
-            moveSorted = sorted(patteMoves)
-            for move in moveSorted:
-                getDicValues.append(str(round(DICT[move], 3)))
-            pattMoveSort = ' '.join(moveSorted)
-            probabi = ' '.join(getDicValues)
-            self.respond(pattMoveSort + ' ' + probabi)
-            
+        movesList, probabilityList = self.go_engine.simulation_policy(self.board)
+        movesList = ' '.join(movesList)
+        probabilityList = ' '.join(probabilityList)
+        self.respond(movesList + ' ' + probabilityList)
+        
     def play_cmd(self, args):
         """
         play a move args[1] for given color args[0] in {'b','w'}
@@ -364,20 +336,21 @@ class GtpConnection:
         board_color = args[0].lower()
         color = color_to_int(board_color)
         move = self.go_engine.get_move(self.board, color)
-        #if move is None:
-            #self.respond('unknown')
-            #return
-        move_coord = point_to_coord(move, self.board.size)
-        move_as_string = format_point(move_coord)
-        if self.board.is_legal(move, color):
-            self.board.play_move(move, color)
-            self.respond(move_as_string.lower())
-        else:
+        if move == -2:
             self.respond("resign")
+        else:
+            move_coord = point_to_coord(move, self.board.size)
+            move_as_string = format_point(move_coord)
+            if self.board.is_legal(move, color):
+                self.board.play_move(move, color)
+                self.respond(move_as_string.lower())
+            else:
+                self.respond("resign")
 
     def solve_cmd(self, args):
         # remove this respond and implement this method
         self.respond('Implement This for Assignment 2')
+
 
 def point_to_coord(point, boardsize):
     """
@@ -391,7 +364,6 @@ def point_to_coord(point, boardsize):
         NS = boardsize + 1
         return divmod(point, NS)
 
-
 def format_point(move):
     """
     Return move coordinates as a string such as 'A1', or 'PASS'.
@@ -401,6 +373,7 @@ def format_point(move):
     if move == PASS:
         return "PASS"
     row, col = move
+    #print(row, col)
     if not 0 <= row < MAXSIZE or not 0 <= col < MAXSIZE:
         raise ValueError
     return column_letters[col - 1] + str(row)

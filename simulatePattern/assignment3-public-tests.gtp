@@ -65,6 +65,7 @@ play w f3
 play b c5
 play w d1
 play b d2
+
 #   A B C D E F G
 # 7 X O X O O . O 7
 # 6 . O X . O X O 6
@@ -143,6 +144,7 @@ policy pattern
 
 play b g7
 selection ucb
+
 60 genmove w
 #? [e2|e3|c4]
 
@@ -234,6 +236,7 @@ play b a2
 # White to play
 
 # rr, pattern
+
 90 genmove w
 #? [c1|c3|d2]
 
@@ -259,6 +262,7 @@ play b a2
 
 # ucb, pattern
 selection ucb
+
 100 genmove w
 #? [c1]
 
@@ -282,6 +286,7 @@ play b a2
 
 # ucb, random
 policy random
+
 110 genmove w
 #? [b2|c1|c3|d2]
 
@@ -305,5 +310,6 @@ play b a2
 
 # rr, random
 selection rr
+
 120 genmove w
 #? [b2|c1|c3|d2]

@@ -10,6 +10,7 @@ The board uses a 1-dimensional representation with padding
 """
 
 import numpy as np
+from board_base import opponent, NO_POINT
 from board_util import (
     GoBoardUtil,
     BLACK,
@@ -235,6 +236,14 @@ class GoBoard(object):
             if self.get_color(nb) == color:
                 nbc.append(nb)
         return nbc
+
+
+    def find_neighbor_of_color(self, point, color):
+        """ List of neighbors of point of given color """
+        for nb in self._neighbors(point):
+            if self.get_color(nb) == color:
+                return nb
+        return NO_POINT    
 
     def _neighbors(self, point):
         """ List of all four neighbors of the point """

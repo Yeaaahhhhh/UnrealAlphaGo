@@ -79,9 +79,11 @@ def writeMoves(board: GoBoard, moves: List[GO_POINT], stats: STATS) -> None:
 def runUcb(player: GoSimulationEngine, board: GoBoard, C: float, 
            moves: List[GO_POINT], toplay: GO_COLOR) -> GO_POINT:
     stats = [[0, 0] for _ in moves]
-    num_simulation = len(moves) * player.args.sim
+    num_simulation = len(moves) * 10
     for n in range(num_simulation):
         moveIndex = findBest(stats, C, n)
+        if moves[moveIndex] == -2:
+            break
         result = player.simulate(board, moves[moveIndex], toplay)
         if result == toplay:
             stats[moveIndex][0] += 1  # win

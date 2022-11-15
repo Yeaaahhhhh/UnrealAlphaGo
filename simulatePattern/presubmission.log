@@ -1,0 +1,25 @@
+Script started on 2022-11-14 20:41:54-07:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="114" LINES="25"]
+zshi6@ud19:~/cmput455>copy[K[K[K[Kmv assignment3.tgz ./as3
+zshi6@ud19:~/cmput455>cd as3
+zshi6@ud19:~/cmput455/as3>ls
+assignment3.tgz
+zshi6@ud19:~/cmput455/as3>tar xvfz assignment3.tgz 
+assignment3/
+assignment3/run_NoGo.sh
+assignment3/weights.txt
+assignment3/board_base.py
+assignment3/simulation_engine.py
+assignment3/engine.py
+assignment3/board.py
+assignment3/NoGo.py
+assignment3/gtp_connection.py
+assignment3/README.txt
+assignment3/assignment3-public-tests.gtp
+assignment3/ucb.py
+assignment3/board_util.py
+zshi6@ud19:~/cmput455/as3>gogui-regress NoGo.py[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kcd assignment3
+zshi6@ud19:~/cmput455/as3/assignment3>gogui-regress assignment3-public-tests.gtp [K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[KNoGo.py assignment3-public-tests.gtp 
+zshi6@ud19:~/cmput455/as3/assignment3>exit
+exit
+
+Script done on 2022-11-14 20:43:41-07:00 [COMMAND_EXIT_CODE="0"]
